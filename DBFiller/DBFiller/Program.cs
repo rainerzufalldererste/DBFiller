@@ -74,6 +74,11 @@ namespace DBFiller
                 startDateTime = startDateTime.AddHours(2);
             }
 
+            Console.WriteLine();
+            System.Threading.Thread.Sleep(1000);
+
+            DBZugriff.LoadData(DBZugriff.DBVerbidung());
+
             Console.ReadKey();
         }
 
