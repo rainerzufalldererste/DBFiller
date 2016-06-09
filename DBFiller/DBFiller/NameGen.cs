@@ -55,9 +55,9 @@ namespace DBFiller
 
         internal static string getDiagnosis()
         {
-            return getName(new string[] { "", "", "", "", "", "partielle ", "gemeine ", "Verdacht auf ", "chronische ", "tropische ", "subsonare ", "allgemeine ", "westliche ", "südländische ", "eitrige ", "geschwollene " },
+            return getName(new string[] { "", "", "", "", "", "partielle ", "gemeine ", "Verdacht auf ", "chronische ", "tropische ", "subsonare ", "allgemeine ", "westliche ", "südländische ", "eitrige ", "geschwollene ","gebrochene " },
                 new string[] { "Vogel-", "Schweine-", "Leber-", "Hirn-", "Herz-", "Magen-", "Darm-", "Schädel-", "Bindehaut-", "Nasennebenhöhlen-", "Schienbein-", "Knochen-", "Knochenmark-", "Blut-", "Schädelbasis-", "Winter-", "Schüttel-", "", "", "", "", "", "", "", "" },
-                new string[] { "Grippe", "Pocken", "Entzündung", "Erköltung", "Masern", "Zirrose", "Athrose", "Glukose", "Fruktose", "Laktose", "Spirrose", "Seerose", "Krebserkrankung", "Schädigung", "Verbrennung", "Stauchung", "Seuche", "Angina", "Pest"});
+                new string[] { "Grippe", "Pocken", "Entzündung", "Erkältung", "Masern", "Zirrose", "Athrose", "Glukose", "Fruktose", "Laktose", "Spirrose", "Seerose", "Krebserkrankung", "Schädigung", "Verbrennung", "Stauchung", "Seuche", "Angina", "Pest"});
         }
 
         internal static Medikament getMed()
