@@ -104,7 +104,7 @@ namespace DBFiller
 
     internal class Abteilung
     {
-        public List<Arzt> ärzte = null;
+        public List<Arzt> ärzte = new List<Arzt>();
         public List<string> Krankheitsnamen = new List<string>();
 
         static int lastID = 0;
@@ -145,6 +145,11 @@ namespace DBFiller
         internal string getDiagnosis()
         {
             return Krankheitsnamen[(int)(NameGen.rand.NextDouble() * int.MaxValue) % Krankheitsnamen.Count];
+        }
+
+        internal Arzt getArzt()
+        {
+            return ärzte[(int)(NameGen.rand.NextDouble() * int.MaxValue) % ärzte.Count];
         }
     }
 
@@ -235,6 +240,7 @@ namespace DBFiller
         {
             Master.ärzte.Add(this);
             this.station = station;
+            station.ärzte.Add(this);
             this._stationNr = station._stationNr;
         }
     }
@@ -356,10 +362,15 @@ namespace DBFiller
         public List<Diagnose> diagnosen = new List<Diagnose>();
         public List<Medikament> medikamente = new List<Medikament>();
 
+        internal Arzt behandelnderArzt;
+        internal int _behandelnderArzt;
+
         internal void endAufenthalt(DateTime endDate)
         {
             bett.freiMachen();
             _endDate = endDate;
+            behandelnderArzt = bett.zimmer.abteilung.getArzt();
+            _behandelnderArzt = behandelnderArzt._id;
         }
 
         internal void addDiagnose(string diagnose)

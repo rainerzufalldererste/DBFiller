@@ -8,28 +8,30 @@ using Npgsql;
 
 namespace DBFiller
 {
-   public static class DBZugriff
-    { 
+    public static partial class DBZugriff
+    {
+        static NpgsqlConnection connection;
 
-     public static NpgsqlConnection DBVerbidung()
+        public static void DBVerbidung()
         {
-           return new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
+            connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
+            connection.Open();
         }
 
 
-   
-    
-        public static void LoadData(NpgsqlConnection connection)
+
+
+        public static void LoadData()
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
 
             cmd.Connection = connection;
-            cmd.Connection.Open();
 
-            foreach(Medikament med in Master.medikamente)
+            foreach (Medikament med in Master.medikamente)
             {
                 cmd.CommandText = "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + ")";
                 cmd.ExecuteNonQuery();
             }
-        }    
-    }}
+        }
+    }
+}

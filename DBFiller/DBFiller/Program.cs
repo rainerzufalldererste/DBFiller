@@ -77,7 +77,10 @@ namespace DBFiller
             Console.WriteLine();
             System.Threading.Thread.Sleep(1000);
 
-            DBZugriff.LoadData(DBZugriff.DBVerbidung());
+            DBZugriff.DBVerbidung();
+            DBZugriff.dropTable();
+            DBZugriff.createTable();
+            DBZugriff.LoadData();
 
             Console.ReadKey();
         }
