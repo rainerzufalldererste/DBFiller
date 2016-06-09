@@ -551,8 +551,8 @@ namespace DBFiller
 
     internal class Unverträglichkeit
     {
-        private int _med1;
-        private int _med2;
+        public int _med1;
+        public int _med2;
 
         public Unverträglichkeit(int _id1, int _id2)
         {

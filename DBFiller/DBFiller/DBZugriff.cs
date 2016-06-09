@@ -9,7 +9,7 @@ using Npgsql;
 namespace DBFiller
 {
     public static partial class DBZugriff
-    {
+    { 
         static NpgsqlConnection connection;
 
         public static void DBVerbidung()
@@ -19,19 +19,98 @@ namespace DBFiller
         }
 
 
-
-
+   
+    
         public static void LoadData()
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
 
             cmd.Connection = connection;
+            cmd.Connection.Open();
 
+            foreach(Patient pat in Master.patienten)
+            {
+                cmd.CommandText = "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Abteilung ab in Master.abteilung)
+            {
+                cmd.CommandText = "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "')";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Angestellter an in Master.angestellte)
+            {
+                cmd.CommandText = "INSERT INTO \"Angestellter\" (id, name) VALUES (" + an._name + ", '" + an._name + "')";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Arzt ar in Master.ärzte)
+            {
+                cmd.CommandText = "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Pfleger pfle in Master.pfleger)
+            {
+                cmd.CommandText = "INSERT INTO \"Pfleger\" (id) VALUES (" + pfle._id + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Zimmer zi in Master.zimmer)
+            {
+                cmd.CommandText = "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(PflegerProZimmer ppz in Master.pflegerProZimmer)
+            {
+                cmd.CommandText = "INSERT INTO \"PflegerProZimmer\" (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Bett bett in Master.betten)
+            {
+                cmd.CommandText = "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Aufenthalt auf in Master.aufenthalte)
+            {
+                cmd.CommandText = "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderAzt) VALUES (" + auf._id + ", " + auf._startDate + ", " + auf._endDate + ", " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Diagnose dia in Master.diagnosen)
+            {
+                cmd.CommandText = "INSERT INTO \"Diagnose\" (aufenthaltsID, diagnose) VALUES (" + dia._aufenthaltsID + ", '" + dia._diagnose + "')";
+                cmd.ExecuteNonQuery();
+            }
+         
             foreach (Medikament med in Master.medikamente)
             {
                 cmd.CommandText = "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + ")";
                 cmd.ExecuteNonQuery();
             }
-        }
+
+            foreach(MedProAufenthalt mpa in Master.medsProAufenthalt)
+            {
+                cmd.CommandText = "INSERT INTO \"MedProAufenthalt\" (medID, id) VALUES (" + mpa._medID + ", " + mpa._aufenthaltsID + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Unverträglichkeit unver in Master.unverträglichkeiten)
+            {
+                cmd.CommandText = "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + ")";
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach(Arbeitslog al in Master.arbeitslogs)
+            {
+                cmd.CommandText = "INSERT INTO \"Arbeitslog\" (id, startDate, endDate) VALUES (" + al._angestellterId + ", " + al._startDate + ", " + al._endDate + ")";
+                cmd.ExecuteNonQuery();
+            }
+        }    
     }
 }
