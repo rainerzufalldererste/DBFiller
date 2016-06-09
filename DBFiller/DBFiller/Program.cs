@@ -94,16 +94,19 @@ namespace DBFiller
 
         private static void generateBettZimmerAbteilung()
         {
+            int diag = 0;
+
             for (int i = 0; i < 15; i++)
             {
                 int zimmer = (int)((NameGen.rand.NextDouble() + .25) * 20 + 8);
                 int betten = (int)(NameGen.rand.NextDouble() * 3 + 2);
 
                 Abteilung a = new Abteilung("Abteilung " + (i + 1));
-                a.generateZimmer(zimmer, betten);
+                a.generateZimmerAndDiagnosen(zimmer, betten);
+                diag += a.Krankheitsnamen.Count;
             }
 
-            Console.WriteLine("{0} Abteilungen, {1} Zimmer und {2} Betten generiert.", Master.abteilung.Count, Master.zimmer.Count, Master.betten.Count);
+            Console.WriteLine("{0} Abteilungen, {1} Zimmer, {2} Betten und {3} Diagnosen generiert.", Master.abteilung.Count, Master.zimmer.Count, Master.betten.Count, diag);
         }
 
         private static void generatePersons()

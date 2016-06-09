@@ -105,6 +105,7 @@ namespace DBFiller
     internal class Abteilung
     {
         public List<Arzt> ärzte = null;
+        public List<string> Krankheitsnamen = new List<string>();
 
         static int lastID = 0;
 
@@ -122,7 +123,7 @@ namespace DBFiller
         public List<Zimmer> zimmer = new List<Zimmer>();
         public int freieZimmer = 0;
 
-        public void generateZimmer(int count, int betten)
+        public void generateZimmerAndDiagnosen(int count, int betten)
         {
             for (int i = 0; i < count; i++)
             {
@@ -132,6 +133,18 @@ namespace DBFiller
             }
 
             freieZimmer = count;
+
+            int num = (int)(NameGen.rand.NextDouble() * int.MaxValue) % 15 + 5;
+
+            for (int i = 0; i < num; i++)
+            {
+                Krankheitsnamen.Add(NameGen.getDiagnosis());
+            }
+        }
+
+        internal string getDiagnosis()
+        {
+            return Krankheitsnamen[(int)(NameGen.rand.NextDouble() * int.MaxValue) % Krankheitsnamen.Count];
         }
     }
 
@@ -261,6 +274,8 @@ namespace DBFiller
         {
             _id = lastID++;
             _krankenkassenNr = patient._krankenkassenNr;
+            _startDate = startDate;
+            _endDate = endDate;
 
             this.patient = patient;
 
@@ -426,14 +441,14 @@ namespace DBFiller
             aufenthalte.Add(currentAufenthalt);
             Master.aufenthalte.Add(currentAufenthalt);
 
-            currentAufenthalt.addDiagnose(NameGen.getDiagnosis());
+            currentAufenthalt.addDiagnose(currentAufenthalt.bett.zimmer.abteilung.getDiagnosis());
             currentAufenthalt.addMed(NameGen.getMed());
 
             for (int i = 0; i < 10; i++)
             {
                 if (NameGen.rand.NextDouble() < .25)
                 {
-                    currentAufenthalt.addDiagnose(NameGen.getDiagnosis());
+                    currentAufenthalt.addDiagnose(currentAufenthalt.bett.zimmer.abteilung.getDiagnosis());
                 }
                 else if (NameGen.rand.NextDouble() > .75)
                 {

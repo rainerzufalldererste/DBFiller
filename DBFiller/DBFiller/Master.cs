@@ -22,6 +22,5 @@ namespace DBFiller
         internal static List<Medikament> medikamente = new List<Medikament>();
         internal static List<Unverträglichkeit> unverträglichkeiten = new List<Unverträglichkeit>();
         internal static List<Angestellter> angestellte = new List<Angestellter>();
-
     }
 }
