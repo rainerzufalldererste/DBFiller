@@ -17,8 +17,8 @@ namespace DBFiller
 
         static void Main(string[] args)
         {
-            DateTime startDateTime = DateTime.Parse("01-01-2010");
-            DateTime endDateTime = DateTime.Parse("06-06-2016");
+            DateTime startDateTime = DateTime.Parse("01-01-2016");
+            DateTime endDateTime = DateTime.Parse("31-12-2016");
 
             generateMeds();
             generateBettZimmerAbteilung();
@@ -28,11 +28,14 @@ namespace DBFiller
             generateÄrzte();
 
             Console.WriteLine();
+            Console.WriteLine("Confirm simulating with this settings from {0} till {1}? Press enter.", startDateTime, endDateTime);
+            Console.ReadKey();
+            Console.WriteLine();
 
-            while(startDateTime < endDateTime)
+            while (startDateTime < endDateTime)
             {
                 if (startDateTime.Day % 7 == 1 && startDateTime.Hour == 0)
-                    Console.WriteLine("Generating History... " + startDateTime.ToShortDateString() + " (" + (Master.arbeitslogs.Count + Master.aufenthalte.Count) + " Einträge | " + (Master.betten.Count - freieBetten.Count) + " belegte Betten | " + aktiveAngestellte.Count + " aktive Angestellte)");
+                    Console.WriteLine("Generating History... " + startDateTime.ToShortDateString() + " (" + getSize() + " Einträge | " + (Master.betten.Count - freieBetten.Count) + " belegte Betten | " + aktiveAngestellte.Count + " aktive Angestellte)");
 
                 if (startDateTime.Hour % 4 < 2)
                 {
@@ -75,19 +78,36 @@ namespace DBFiller
             }
 
             Console.WriteLine();
-            System.Threading.Thread.Sleep(1000);
-
-            DBZugriff.DBVerbidung();
-            DBZugriff.dropTable();
-            DBZugriff.createTable();
-            DBZugriff.LoadData();
-
+            Console.WriteLine("Confirm writing {0} Entries to the Database? Press enter.", getSize());
             Console.ReadKey();
+            Console.WriteLine();
+
+            try
+            {
+                DBZugriff.DBVerbidung();
+                DBZugriff.dropTable();
+                DBZugriff.createTable();
+                DBZugriff.LoadData();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(e);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            
+            Console.ReadKey();
+        }
+
+        private static int getSize()
+        {
+            return Master.abteilungen.Count + Master.angestellte.Count + Master.arbeitslogs.Count + Master.aufenthalte.Count + Master.betten.Count + Master.diagnosen.Count + Master.medikamente.Count + Master.medsProAufenthalt.Count + Master.patienten.Count + Master.pfleger.Count + Master.pflegerProZimmer.Count + Master.unverträglichkeiten.Count + Master.zimmer.Count + Master.ärzte.Count;
         }
 
         private static void generateMeds()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 300; i++)
             {
                 Medikament m = new Medikament(NameGen.getNameLoopFirst(NameGen.medizinS, NameGen.medizinE));
 
@@ -114,14 +134,14 @@ namespace DBFiller
                 diag += a.Krankheitsnamen.Count;
             }
 
-            Console.WriteLine("{0} Abteilungen, {1} Zimmer, {2} Betten und {3} Diagnosen generiert.", Master.abteilung.Count, Master.zimmer.Count, Master.betten.Count, diag);
+            Console.WriteLine("{0} Abteilungen, {1} Zimmer, {2} Betten und {3} Diagnosen generiert.", Master.abteilungen.Count, Master.zimmer.Count, Master.betten.Count, diag);
         }
 
         private static void generatePersons()
         {
             int m = 0, w = 0;
 
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 2500; i++)
             {
                 if (NameGen.rand.NextDouble() > .5d)
                 {
@@ -140,7 +160,7 @@ namespace DBFiller
 
         private static void generatePfleger()
         {
-            for (int i = 0; i < 250; i++)
+            for (int i = 0; i < 350; i++)
             {
                 new Pfleger(NameGen.getName(NameGen.vornamenW, NameGen.tiere));
             }
@@ -150,7 +170,7 @@ namespace DBFiller
 
         private static void generatePflegerProZimmer() // bad!
         {
-            for (int i = 0; i < Master.zimmer.Count * 8; i++)
+            for (int i = 0; i < Master.zimmer.Count * 10; i++)
             {
                 int pfleger = (int)(NameGen.rand.NextDouble() * int.MaxValue) % Master.pfleger.Count;
 
@@ -162,11 +182,11 @@ namespace DBFiller
 
         private static void generateÄrzte()
         {
-            for (int i = 0; i < 75; i++)
+            for (int i = 0; i < 80; i++)
             {
-                int station = (int)(NameGen.rand.NextDouble() * int.MaxValue) % Master.abteilung.Count;
+                int station = (int)(NameGen.rand.NextDouble() * int.MaxValue) % Master.abteilungen.Count;
 
-                new Arzt(NameGen.getName(NameGen.vornamenM, NameGen.tiere), Master.abteilung[station]);
+                new Arzt(NameGen.getName(NameGen.vornamenM, NameGen.tiere), Master.abteilungen[station]);
             }
 
             Console.WriteLine("{0} Ärzte generiert.", Master.ärzte.Count);

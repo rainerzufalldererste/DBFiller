@@ -17,9 +17,6 @@ namespace DBFiller
             connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
         }
-
-
-   
     
         public static void LoadData()
         {
@@ -29,7 +26,9 @@ namespace DBFiller
 
             cmd.Connection = connection;
 
-            foreach(Patient pat in Master.patienten)
+            Console.WriteLine("Lege Patienten an ({0} Elemente)", Master.patienten.Count);
+
+            foreach (Patient pat in Master.patienten)
             {
                 cmd.CommandText = "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + ")";
                 cmd.ExecuteNonQuery();
@@ -37,13 +36,17 @@ namespace DBFiller
 
             Console.WriteLine("Patienten angelegt.");
 
-            foreach(Abteilung ab in Master.abteilung)
+            Console.WriteLine("Lege Abteilungen an ({0} Elemente)", Master.abteilungen.Count);
+
+            foreach (Abteilung ab in Master.abteilungen)
             {
                 cmd.CommandText = "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "')";
                 cmd.ExecuteNonQuery();
             }
 
             Console.WriteLine("Abteilungen angelegt.");
+
+            Console.WriteLine("Lege Angestellte an ({0} Elemente)", Master.angestellte.Count);
 
             foreach (Angestellter an in Master.angestellte)
             {
@@ -53,6 +56,8 @@ namespace DBFiller
 
             Console.WriteLine("Angestellte angelegt.");
 
+            Console.WriteLine("Lege Ärzte an ({0} Elemente)", Master.ärzte.Count);
+
             foreach (Arzt ar in Master.ärzte)
             {
                 cmd.CommandText = "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + ")";
@@ -60,6 +65,8 @@ namespace DBFiller
             }
 
             Console.WriteLine("Ärzte angelegt.");
+
+            Console.WriteLine("Lege Pfleger an ({0} Elemente)", Master.pfleger.Count);
 
             foreach (Pfleger pfle in Master.pfleger)
             {
@@ -69,6 +76,8 @@ namespace DBFiller
 
             Console.WriteLine("Pfleger angelegt.");
 
+            Console.WriteLine("Lege Zimmer an ({0} Elemente)", Master.zimmer.Count);
+
             foreach (Zimmer zi in Master.zimmer)
             {
                 cmd.CommandText = "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + ")";
@@ -76,6 +85,8 @@ namespace DBFiller
             }
 
             Console.WriteLine("Zimmer angelegt.");
+
+            Console.WriteLine("Lege PflegerProZimmer an ({0} Elemente)", Master.pflegerProZimmer.Count);
 
             foreach (PflegerProZimmer ppz in Master.pflegerProZimmer)
             {
@@ -85,6 +96,8 @@ namespace DBFiller
 
             Console.WriteLine("PflegerProZimmer angelegt.");
 
+            Console.WriteLine("Lege Betten an ({0} Elemente)", Master.betten.Count);
+
             foreach (Bett bett in Master.betten)
             {
                 cmd.CommandText = "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + ")";
@@ -93,14 +106,23 @@ namespace DBFiller
 
             Console.WriteLine("Betten angelegt.");
 
-            foreach (Aufenthalt auf in Master.aufenthalte)
+            Console.WriteLine("Lege Aufenthalte an ({0} Elemente)", Master.aufenthalte.Count);
+
+            for (int i = 0; i < Master.aufenthalte.Count; i++)
             {
+                if (i % ((Master.aufenthalte.Count - 1) / 100) == 0)
+                    Console.WriteLine("Aufenthalte werden angelegt... (" + ((float)((float)i / ((float)Master.aufenthalte.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                Aufenthalt auf = Master.aufenthalte[i];
+
                 auf.getID();
                 cmd.CommandText = "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + ")";
                 cmd.ExecuteNonQuery();
             }
 
             Console.WriteLine("Aufenthalte angelegt.");
+
+            Console.WriteLine("Lege Diagnosen an ({0} Elemente)", Master.diagnosen.Count);
 
             foreach (Diagnose dia in Master.diagnosen)
             {
@@ -110,13 +132,17 @@ namespace DBFiller
 
             Console.WriteLine("Diagnosen angelegt.");
 
+            Console.WriteLine("Lege Medikamente an ({0} Elemente)", Master.medikamente.Count);
+
             foreach (Medikament med in Master.medikamente)
             {
                 cmd.CommandText = "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + ")";
                 cmd.ExecuteNonQuery();
             }
 
-            Console.WriteLine("Medikamene angelegt.");
+            Console.WriteLine("Medikamente angelegt.");
+
+            Console.WriteLine("Lege MedikamenteProAufenthalt an ({0} Elemente)", Master.medsProAufenthalt.Count);
 
             foreach (MedProAufenthalt mpa in Master.medsProAufenthalt)
             {
@@ -126,6 +152,8 @@ namespace DBFiller
 
             Console.WriteLine("MedProAufenthalte angelegt.");
 
+            Console.WriteLine("Lege Unverträglichkeiten an ({0} Elemente)", Master.unverträglichkeiten.Count);
+
             foreach (Unverträglichkeit unver in Master.unverträglichkeiten)
             {
                 cmd.CommandText = "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + ")";
@@ -134,15 +162,24 @@ namespace DBFiller
 
             Console.WriteLine("Unverträglichkeiten angelegt.");
 
-            foreach (Arbeitslog al in Master.arbeitslogs)
+            Console.WriteLine("Lege Arbeitslogs an ({0} Elemente)", Master.arbeitslogs.Count);
+
+            for (int i = 0; i < Master.arbeitslogs.Count; i++)
             {
+                if (i % ((Master.arbeitslogs.Count - 1) / 100) == 0)
+                    Console.WriteLine("Arbeitslogs werden angelegt... (" + ((float)((float)i / ((float)Master.arbeitslogs.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                Arbeitslog al = Master.arbeitslogs[i];
+
                 cmd.CommandText = "INSERT INTO \"Arbeitslog\" (id, startDate, endDate) VALUES (" + al._angestellterId + ", to_timestamp('" + al._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + al._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'))";
                 cmd.ExecuteNonQuery();
             }
 
             Console.WriteLine("Arbeitslogs angelegt.");
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nAlle Tabellen wurden vollständig angelegt.");
+            Console.ForegroundColor = ConsoleColor.White;
         }    
     }
 }

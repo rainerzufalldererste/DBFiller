@@ -114,7 +114,7 @@ namespace DBFiller
             _stationNr = lastID++;
             _name = text;
 
-            Master.abteilung.Add(this);
+            Master.abteilungen.Add(this);
         }
 
         public int _stationNr;

@@ -10,7 +10,7 @@ namespace DBFiller
     {
         internal static List<Bett> betten = new List<Bett>();
         internal static List<Zimmer> zimmer = new List<Zimmer>();
-        internal static List<Abteilung> abteilung = new List<Abteilung>();
+        internal static List<Abteilung> abteilungen = new List<Abteilung>();
         internal static List<Pfleger> pfleger = new List<Pfleger>();
         internal static List<PflegerProZimmer> pflegerProZimmer = new List<PflegerProZimmer>();
         internal static List<Arzt> ärzte = new List<Arzt>();

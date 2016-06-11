@@ -11,8 +11,19 @@ namespace DBFiller
     {
         public static void dropTable()
         {
-            new NpgsqlCommand("drop table \"Patient\" cascade; drop table \"Abteilung\" cascade; drop table \"Angestellter\" cascade; drop table \"Arzt\" cascade; drop table \"Pfleger\" cascade; drop table \"Zimmer\" cascade; drop table \"PflegerProZimmer\" cascade; drop table \"Bett\" cascade; drop table \"Aufenthalt\" cascade; drop table \"Diagnose\" cascade; drop table \"Medikament\" cascade; drop table \"MedProAufenthalt\" cascade; drop table \"Unvertraeglichkeiten\" cascade; drop table \"Arbeitslog\" cascade; ", connection).ExecuteNonQuery();
-            Console.WriteLine("Tables dropped.");
+            try
+            {
+                new NpgsqlCommand("drop table \"Patient\" cascade; drop table \"Abteilung\" cascade; drop table \"Angestellter\" cascade; drop table \"Arzt\" cascade; drop table \"Pfleger\" cascade; drop table \"Zimmer\" cascade; drop table \"PflegerProZimmer\" cascade; drop table \"Bett\" cascade; drop table \"Aufenthalt\" cascade; drop table \"Diagnose\" cascade; drop table \"Medikament\" cascade; drop table \"MedProAufenthalt\" cascade; drop table \"Unvertraeglichkeiten\" cascade; drop table \"Arbeitslog\" cascade; ", connection).ExecuteNonQuery();
+                Console.WriteLine("Tables dropped.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("FAILED TO DROP TABLES!\n");
+                Console.WriteLine(e);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
 
         public static void createTable()
