@@ -162,7 +162,7 @@ namespace DBFiller
 
         private static void generateÄrzte()
         {
-            for (int i = 0; i < 45; i++)
+            for (int i = 0; i < 75; i++)
             {
                 int station = (int)(NameGen.rand.NextDouble() * int.MaxValue) % Master.abteilung.Count;
 

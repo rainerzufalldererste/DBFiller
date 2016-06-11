@@ -278,7 +278,6 @@ namespace DBFiller
         /// <param name=""></param>
         public Aufenthalt(Patient patient, DateTime startDate, DateTime endDate, params string[] diagnosen)
         {
-            _id = lastID++;
             _krankenkassenNr = patient._krankenkassenNr;
             _startDate = startDate;
             _endDate = endDate;
@@ -306,6 +305,7 @@ namespace DBFiller
                         if (Math.Abs(Program.freieBetten[i].zimmer.age - patient._alter) < 5) // 5 Jahre altersunterschied
                         {
                             this.bett = Program.freieBetten[i];
+                            this._bettenNr = bett._bettenNr;
                             Program.freieBetten[i].belegen(patient);
                             return;
                         }
@@ -320,6 +320,7 @@ namespace DBFiller
                 if (Program.freieBetten[i].zimmer.freieBetten == Program.freieBetten[i].zimmer.betten.Count)
                 {
                     this.bett = Program.freieBetten[i];
+                    this._bettenNr = bett._bettenNr;
                     Program.freieBetten[i].belegen(patient);
                     return;
                 }
@@ -333,6 +334,7 @@ namespace DBFiller
                 if (Program.freieBetten[i].zimmer.geschlecht == patient._geschlecht)
                 {
                     this.bett = Program.freieBetten[i];
+                    this._bettenNr = bett._bettenNr;
                     Program.freieBetten[i].belegen(patient);
                     return;
                 }
@@ -343,6 +345,7 @@ namespace DBFiller
             for (int i = 0; i < Program.freieBetten.Count; i++)
             {
                 this.bett = Program.freieBetten[i];
+                this._bettenNr = bett._bettenNr;
                 Program.freieBetten[i].belegen(patient);
                 return;
             }
@@ -382,6 +385,11 @@ namespace DBFiller
         internal void addMed(Medikament medikament)
         {
             medikamente.Add(medikament);
+        }
+
+        internal void getID()
+        {
+            _id = lastID++;
         }
     }
 
