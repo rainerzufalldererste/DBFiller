@@ -284,8 +284,6 @@ namespace DBFiller
 
             this.patient = patient;
 
-            Master.aufenthalte.Add(this);
-
             if(diagnosen.Length > 0)
             {
                 for (int i = 0; i < diagnosen.Length; i++)
@@ -385,6 +383,7 @@ namespace DBFiller
         internal void addMed(Medikament medikament)
         {
             medikamente.Add(medikament);
+            new MedProAufenthalt(this, medikament);
         }
 
         internal void getID()
@@ -403,6 +402,7 @@ namespace DBFiller
         {
             this.aufenthalt = aufenthalt;
             this._aufenthaltsID = aufenthalt._id;
+
             this._diagnose = name;
 
             Master.diagnosen.Add(this);
@@ -465,11 +465,11 @@ namespace DBFiller
 
             for (int i = 0; i < 10; i++)
             {
-                if (NameGen.rand.NextDouble() < .25)
+                if (NameGen.rand.NextDouble() < .1)
                 {
                     currentAufenthalt.addDiagnose(currentAufenthalt.bett.zimmer.abteilung.getDiagnosis());
                 }
-                else if (NameGen.rand.NextDouble() > .75)
+                else if (NameGen.rand.NextDouble() > .9)
                 {
                     currentAufenthalt.addMed(NameGen.getMed());
                 }

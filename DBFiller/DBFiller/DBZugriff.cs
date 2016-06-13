@@ -9,7 +9,7 @@ using Npgsql;
 namespace DBFiller
 {
     public static partial class DBZugriff
-    { 
+    {
         static NpgsqlConnection connection;
 
         public static void DBVerbidung()
@@ -17,10 +17,11 @@ namespace DBFiller
             connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
         }
-    
+
         public static void LoadData()
         {
             Console.WriteLine();
+            string s = "";
 
             NpgsqlCommand cmd = new NpgsqlCommand();
 
@@ -30,9 +31,12 @@ namespace DBFiller
 
             foreach (Patient pat in Master.patienten)
             {
-                cmd.CommandText = "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Patienten angelegt.");
 
@@ -40,9 +44,12 @@ namespace DBFiller
 
             foreach (Abteilung ab in Master.abteilungen)
             {
-                cmd.CommandText = "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "')";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "'); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Abteilungen angelegt.");
 
@@ -50,9 +57,12 @@ namespace DBFiller
 
             foreach (Angestellter an in Master.angestellte)
             {
-                cmd.CommandText = "INSERT INTO \"Angestellter\" (id, name) VALUES (" + an._id + ", '" + an._name + "')";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Angestellter\" (id, name) VALUES (" + an._id + ", '" + an._name + "'); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Angestellte angelegt.");
 
@@ -60,9 +70,12 @@ namespace DBFiller
 
             foreach (Arzt ar in Master.ärzte)
             {
-                cmd.CommandText = "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Ärzte angelegt.");
 
@@ -70,9 +83,12 @@ namespace DBFiller
 
             foreach (Pfleger pfle in Master.pfleger)
             {
-                cmd.CommandText = "INSERT INTO \"Pfleger\" (id) VALUES (" + pfle._id + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Pfleger\" (id) VALUES (" + pfle._id + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Pfleger angelegt.");
 
@@ -80,9 +96,12 @@ namespace DBFiller
 
             foreach (Zimmer zi in Master.zimmer)
             {
-                cmd.CommandText = "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Zimmer angelegt.");
 
@@ -90,9 +109,12 @@ namespace DBFiller
 
             foreach (PflegerProZimmer ppz in Master.pflegerProZimmer)
             {
-                cmd.CommandText = "INSERT INTO \"PflegerProZimmer\" (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"PflegerProZimmer\" (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("PflegerProZimmer angelegt.");
 
@@ -100,9 +122,12 @@ namespace DBFiller
 
             foreach (Bett bett in Master.betten)
             {
-                cmd.CommandText = "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Betten angelegt.");
 
@@ -111,23 +136,53 @@ namespace DBFiller
             for (int i = 0; i < Master.aufenthalte.Count; i++)
             {
                 if (i % ((Master.aufenthalte.Count - 1) / 100) == 0)
+                {
                     Console.WriteLine("Aufenthalte werden angelegt... (" + ((float)((float)i / ((float)Master.aufenthalte.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                    cmd.CommandText = s;
+                    cmd.ExecuteNonQuery();
+                    s = "";
+                }
 
                 Aufenthalt auf = Master.aufenthalte[i];
 
                 auf.getID();
-                cmd.CommandText = "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + ")";
+                s += "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + "); ";
+            }
+
+            if (s != "")
+            {
+                cmd.CommandText = s;
                 cmd.ExecuteNonQuery();
+                s = "";
             }
 
             Console.WriteLine("Aufenthalte angelegt.");
 
             Console.WriteLine("Lege Diagnosen an ({0} Elemente)", Master.diagnosen.Count);
 
-            foreach (Diagnose dia in Master.diagnosen)
+            for (int i = 0; i < Master.diagnosen.Count; i++)
             {
-                cmd.CommandText = "INSERT INTO \"Diagnose\" (aufenthaltsID, diagnose) VALUES (" + dia._aufenthaltsID + ", '" + dia._diagnose + "')";
+                if (i % ((Master.diagnosen.Count - 1) / 100) == 0)
+                {
+                    Console.WriteLine("Diagnosen werden angelegt... (" + ((float)((float)i / ((float)Master.diagnosen.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                    cmd.CommandText = s;
+                    cmd.ExecuteNonQuery();
+                    s = "";
+                }
+
+                Diagnose dia = Master.diagnosen[i];
+                dia._aufenthaltsID = dia.aufenthalt._id;
+
+                s += "INSERT INTO \"Diagnose\" (aufenthaltsID, diagnose) VALUES (" + dia._aufenthaltsID + ", '" + dia._diagnose + "'); ";
+            }
+
+            if (s != "")
+            {
+                cmd.CommandText = s;
                 cmd.ExecuteNonQuery();
+                s = "";
             }
 
             Console.WriteLine("Diagnosen angelegt.");
@@ -136,18 +191,38 @@ namespace DBFiller
 
             foreach (Medikament med in Master.medikamente)
             {
-                cmd.CommandText = "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Medikamente angelegt.");
 
             Console.WriteLine("Lege MedikamenteProAufenthalt an ({0} Elemente)", Master.medsProAufenthalt.Count);
 
-            foreach (MedProAufenthalt mpa in Master.medsProAufenthalt)
+            for (int i = 0; i < Master.medsProAufenthalt.Count; i++)
             {
-                cmd.CommandText = "INSERT INTO \"MedProAufenthalt\" (medID, id) VALUES (" + mpa._medID + ", " + mpa._aufenthaltsID + ")";
+                if (i % ((Master.medsProAufenthalt.Count - 1) / 100) == 0)
+                {
+                    Console.WriteLine("MedikamenteProAufenthalt werden angelegt... (" + ((float)((float)i / ((float)Master.medsProAufenthalt.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                    cmd.CommandText = s;
+                    cmd.ExecuteNonQuery();
+                    s = "";
+                }
+
+                MedProAufenthalt mpa = Master.medsProAufenthalt[i];
+
+                s += "INSERT INTO \"MedProAufenthalt\" (medID, id) VALUES (" + mpa._medID + ", " + mpa._aufenthaltsID + "); ";
+            }
+
+            if (s != "")
+            {
+                cmd.CommandText = s;
                 cmd.ExecuteNonQuery();
+                s = "";
             }
 
             Console.WriteLine("MedProAufenthalte angelegt.");
@@ -156,9 +231,12 @@ namespace DBFiller
 
             foreach (Unverträglichkeit unver in Master.unverträglichkeiten)
             {
-                cmd.CommandText = "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + ")";
-                cmd.ExecuteNonQuery();
+                s += "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + "); ";
             }
+
+            cmd.CommandText = s;
+            cmd.ExecuteNonQuery();
+            s = "";
 
             Console.WriteLine("Unverträglichkeiten angelegt.");
 
@@ -167,12 +245,24 @@ namespace DBFiller
             for (int i = 0; i < Master.arbeitslogs.Count; i++)
             {
                 if (i % ((Master.arbeitslogs.Count - 1) / 100) == 0)
+                {
                     Console.WriteLine("Arbeitslogs werden angelegt... (" + ((float)((float)i / ((float)Master.arbeitslogs.Count - 1f)) * 100f).ToString("0") + "%)");
+
+                    cmd.CommandText = s;
+                    cmd.ExecuteNonQuery();
+                    s = "";
+                }
 
                 Arbeitslog al = Master.arbeitslogs[i];
 
-                cmd.CommandText = "INSERT INTO \"Arbeitslog\" (id, startDate, endDate) VALUES (" + al._angestellterId + ", to_timestamp('" + al._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + al._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'))";
+                s += "INSERT INTO \"Arbeitslog\" (id, startDate, endDate) VALUES (" + al._angestellterId + ", to_timestamp('" + al._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + al._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'));";
+            }
+
+            if (s != "")
+            {
+                cmd.CommandText = s;
                 cmd.ExecuteNonQuery();
+                s = "";
             }
 
             Console.WriteLine("Arbeitslogs angelegt.");
@@ -180,6 +270,6 @@ namespace DBFiller
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nAlle Tabellen wurden vollständig angelegt.");
             Console.ForegroundColor = ConsoleColor.White;
-        }    
+        }
     }
 }

@@ -14,10 +14,13 @@ namespace DBFiller
         internal static List<Angestellter> aktiveAngestellte = new List<Angestellter>();
         internal static List<Zimmer> freieZimmer = new List<Zimmer>();
         internal static List<Bett> freieBetten = new List<Bett>();
+        private static bool alreadyPressed;
 
         static void Main(string[] args)
         {
-            DateTime startDateTime = DateTime.Parse("01-01-2016");
+            StartPos:
+            
+            DateTime startDateTime = DateTime.Parse("01-01-2010");
             DateTime endDateTime = DateTime.Parse("31-12-2016");
 
             generateMeds();
@@ -28,59 +31,77 @@ namespace DBFiller
             generateÄrzte();
 
             Console.WriteLine();
-            Console.WriteLine("Confirm simulating with this settings from {0} till {1}? Press enter.", startDateTime, endDateTime);
-            Console.ReadKey();
-            Console.WriteLine();
 
-            while (startDateTime < endDateTime)
+            if (!alreadyPressed)
             {
-                if (startDateTime.Day % 7 == 1 && startDateTime.Hour == 0)
-                    Console.WriteLine("Generating History... " + startDateTime.ToShortDateString() + " (" + getSize() + " Einträge | " + (Master.betten.Count - freieBetten.Count) + " belegte Betten | " + aktiveAngestellte.Count + " aktive Angestellte)");
+                Console.WriteLine();
+                Console.WriteLine("Confirm simulating with this settings from {0} till {1}? Press enter.", startDateTime, endDateTime);
+                Console.ReadKey();
+                alreadyPressed = true;
+                Console.WriteLine();
+            }
 
-                if (startDateTime.Hour % 4 < 2)
+            try
+            {
+                while (startDateTime < endDateTime)
                 {
-                    for (int i = 0; i < aktiveAngestellte.Count; i++)
+                    if (startDateTime.Day == 1 && startDateTime.Hour == 0)
+                        Console.WriteLine("Generating History... " + startDateTime.ToShortDateString() + " (" + getSize() + " Einträge | " + (Master.betten.Count - freieBetten.Count) + " belegte Betten | " + aktiveAngestellte.Count + " aktive Angestellte)");
+
+                    if (startDateTime.Hour % 4 < 2)
                     {
-                        if(NameGen.rand.NextDouble() < .02f)
+                        for (int i = 0; i < aktiveAngestellte.Count; i++)
                         {
-                            aktiveAngestellte[i].endArbeit(startDateTime);
+                            if (NameGen.rand.NextDouble() < .02f)
+                            {
+                                aktiveAngestellte[i].endArbeit(startDateTime);
+                            }
+                        }
+
+                        for (int i = 0; i < inaktivePersonen.Count; i++)
+                        {
+                            if (NameGen.rand.NextDouble() < .01f)
+                            {
+                                inaktivePersonen[i].addAufenthalt(startDateTime);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < inaktiveAngestellte.Count; i++)
+                        {
+                            if (NameGen.rand.NextDouble() < .02f)
+                            {
+                                inaktiveAngestellte[i].startArbeit(startDateTime);
+                            }
+                        }
+
+                        for (int i = 0; i < aktivePersonen.Count; i++)
+                        {
+                            if (NameGen.rand.NextDouble() < .02f)
+                            {
+                                aktivePersonen[i].endAufenthalt(startDateTime);
+                            }
                         }
                     }
 
-                    for (int i = 0; i < inaktivePersonen.Count; i++)
-                    {
-                        if (NameGen.rand.NextDouble() < .01f)
-                        {
-                            inaktivePersonen[i].addAufenthalt(startDateTime);
-                        }
-                    }
+                    startDateTime = startDateTime.AddHours(2);
                 }
-                else
-                {
-                    for (int i = 0; i < inaktiveAngestellte.Count; i++)
-                    {
-                        if (NameGen.rand.NextDouble() < .02f)
-                        {
-                            inaktiveAngestellte[i].startArbeit(startDateTime);
-                        }
-                    }
-
-                    for (int i = 0; i < aktivePersonen.Count; i++)
-                    {
-                        if (NameGen.rand.NextDouble() < .02f)
-                        {
-                            aktivePersonen[i].endAufenthalt(startDateTime);
-                        }
-                    }
-                }
-
-                startDateTime = startDateTime.AddHours(2);
+            }
+            catch(Exception e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(e.Message);
+                Console.ForegroundColor = ConsoleColor.White;
+                goto StartPos;
             }
 
             Console.WriteLine();
             Console.WriteLine("Confirm writing {0} Entries to the Database? Press enter.", getSize());
             Console.ReadKey();
             Console.WriteLine();
+
+            TRY_SEND:
 
             try
             {
@@ -96,8 +117,20 @@ namespace DBFiller
                 Console.WriteLine(e);
                 Console.ForegroundColor = ConsoleColor.White;
             }
+
+            Console.WriteLine("\nType 'end' to quit, 'restart' to try sending the generated data (again).\n");
+            string result;
+
+            while (true)
+            {
+                result = Console.ReadLine();
+
+                if (result == "end")
+                    return;
+                else if(result == "restart")
+                    goto TRY_SEND;
+            }
             
-            Console.ReadKey();
         }
 
         private static int getSize()
@@ -126,7 +159,7 @@ namespace DBFiller
 
             for (int i = 0; i < 15; i++)
             {
-                int zimmer = (int)((NameGen.rand.NextDouble() + .25) * 20 + 8);
+                int zimmer = (int)((NameGen.rand.NextDouble() + .25) * 25 + 10);
                 int betten = (int)(NameGen.rand.NextDouble() * 3 + 2);
 
                 Abteilung a = new Abteilung("Abteilung " + (i + 1));

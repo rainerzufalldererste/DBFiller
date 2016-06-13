@@ -44,8 +44,8 @@ namespace DBFiller
             return ret;
         }
 
-        public static string[] vornamenM = { "Ludwig ", "Berthold ", "Alois ", "Winfried ", "Otto ", "Gregor ", "Thomas ", "Johannes ", "Markus ", "Peter ", "Gerd ", "Tobias ", "Hans ", "Walther ", "Günther ", "Manfred ", "Pierre ", "Juan ", "Klaus ", "Kürbis" };
-        public static string[] vornamenW = { "Gudrun ", "Anette ", "Luise ", "Patrice ", "Waltraud ", "Anastasia ", "Julietta ", "Petra ", "Anna ", "Lisa ", "Mona ", "Augusta ", "Hanna ", "Sandra ", "Gundula ", "Claudia ", "Henrietta" };
+        public static string[] vornamenM = { "Ludwig", "Berthold", "Alois", "Winfried", "Otto", "Gregor", "Thomas", "Johannes", "Markus", "Peter", "Gerd", "Tobias", "Hans", "Walther", "Günther", "Manfred", "Pierre", "Juan", "Klaus", "Kürbis" };
+        public static string[] vornamenW = { "Gudrun", "Anette", "Luise", "Patrice", "Waltraud", "Anastasia", "Julietta", "Petra", "Anna", "Lisa", "Mona", "Augusta", "Hanna", "Sandra", "Gundula", "Claudia", "Henrietta" };
 
         public static string[] grünzeug = { "Schnittlauch", "Potato", "Spitzkohl", "Kohl", "Möhre", "Kürbis", "Salbei", "Hopfen", "Gerste", "Sanddorn", "Holunder", "Pfifferling", "Birne", "Rotkraut", "Eiche", "Tannenwald", "Soja" };
         public static string[] tiere = { "Eber", "Hirsch", "Lux", "Katze", "Hund", "Esel", "Pferd", "Hornisse", "Salamander", "Kröte", "Frosch", "Ziege", "Gemse", "Nashorn", "Antilope", "Wespe", "Hummel", "Biene", "Stechmücke" };
@@ -55,9 +55,9 @@ namespace DBFiller
 
         internal static string getDiagnosis()
         {
-            return getName(new string[] { "", "", "", "", "", "partielle ", "gemeine ", "Verdacht auf ", "chronische ", "tropische ", "subsonare ", "allgemeine ", "westliche ", "südländische ", "eitrige ", "geschwollene ","gebrochene " },
-                new string[] { "Vogel-", "Schweine-", "Leber-", "Hirn-", "Herz-", "Magen-", "Darm-", "Schädel-", "Bindehaut-", "Nasennebenhöhlen-", "Schienbein-", "Knochen-", "Knochenmark-", "Blut-", "Schädelbasis-", "Winter-", "Schüttel-", "", "", "", "", "", "", "", "" },
-                new string[] { "Grippe", "Pocken", "Entzündung", "Erkältung", "Masern", "Zirrose", "Athrose", "Glukose", "Fruktose", "Laktose", "Spirrose", "Seerose", "Krebserkrankung", "Schädigung", "Verbrennung", "Stauchung", "Seuche", "Angina", "Pest"});
+            return getName(new string[] { "", "", "", "", "", "partielle ", "gemeine ", "Verdacht auf ", "chronische ", "tropische ", "subsonare ", "allgemeine ", "westliche ", "südländische ", "eitrige ", "geschwollene ","gebrochene ", "infektiöse ", "ansteckende ", "vorzeitige-", "resistente-" },
+                new string[] { "Vogel-", "Schweine-", "Leber-", "Hirn-", "Herz-", "Magen-", "Darm-", "Schädel-", "Bindehaut-", "Nasennebenhöhlen-", "Schienbein-", "Knochen-", "Knochenmark-", "Blut-", "Schädelbasis-", "Winter-", "Schüttel-", "Rückenmark-", "Nieren-", "Rachen-", "Hirnhaut-", "Rinder-", "Polyviren-", "Tumor-", "", "", "", "", "", "" },
+                new string[] { "Grippe", "Pocken", "Entzündung", "Erkältung", "Masern", "Zirrose", "Athrose", "Glukose", "Fruktose", "Laktose", "Spirrose", "Seerose", "Krebserkrankung", "Schädigung", "Verbrennung", "Stauchung", "Seuche", "Angina", "Pest", "Erkrankung", "Erfrierungen", "Schwangerschaft", "Geburt", "Röteln", "Transplantation", "Spende", "Lähmung" });
         }
 
         internal static Medikament getMed()
