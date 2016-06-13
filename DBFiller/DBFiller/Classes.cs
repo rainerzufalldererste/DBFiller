@@ -282,6 +282,8 @@ namespace DBFiller
             _startDate = startDate;
             _endDate = endDate;
 
+            getID();
+
             this.patient = patient;
 
             if(diagnosen.Length > 0)
