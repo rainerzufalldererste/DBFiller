@@ -10,12 +10,15 @@ namespace DBFiller
 {
     public static partial class DBZugriff
     {
-        static NpgsqlConnection connection;
+        internal static NpgsqlConnection connection;
+        const int teiler = 350;
 
         public static void DBVerbidung()
         {
             connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
+
+            DBSpammer.spamDB(4);
         }
 
         public static void LoadData()
@@ -23,9 +26,9 @@ namespace DBFiller
             Console.WriteLine();
             string s = "";
 
-            NpgsqlCommand cmd = new NpgsqlCommand();
+            //NpgsqlCommand cmd = new NpgsqlCommand();
 
-            cmd.Connection = connection;
+            //cmd.Connection = connection;
 
             Console.WriteLine("Lege Patienten an ({0} Elemente)", Master.patienten.Count);
 
@@ -34,8 +37,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Patienten angelegt.");
@@ -47,8 +49,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "'); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Abteilungen angelegt.");
@@ -60,8 +61,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Angestellter\" (id, name) VALUES (" + an._id + ", '" + an._name + "'); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Angestellte angelegt.");
@@ -73,8 +73,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Ärzte angelegt.");
@@ -86,8 +85,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Pfleger\" (id) VALUES (" + pfle._id + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Pfleger angelegt.");
@@ -99,8 +97,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Zimmer angelegt.");
@@ -112,8 +109,7 @@ namespace DBFiller
                 s += "INSERT INTO \"PflegerProZimmer\" (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("PflegerProZimmer angelegt.");
@@ -125,8 +121,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Betten angelegt.");
@@ -135,25 +130,22 @@ namespace DBFiller
 
             for (int i = 0; i < Master.aufenthalte.Count; i++)
             {
-                if (i % ((Master.aufenthalte.Count - 1) / 100) == 0)
+                if (i % ((Master.aufenthalte.Count - 1) / teiler) == 0)
                 {
                     Console.WriteLine("Aufenthalte werden angelegt... (" + ((float)((float)i / ((float)Master.aufenthalte.Count - 1f)) * 100f).ToString("0") + "%)");
 
-                    cmd.CommandText = s;
-                    cmd.ExecuteNonQuery();
+                    DBSpammer.setToQueue(s);
                     s = "";
                 }
 
                 Aufenthalt auf = Master.aufenthalte[i];
-
-                //auf.getID();
+                
                 s += "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + "); ";
             }
 
             if (s != "")
             {
-                cmd.CommandText = s;
-                cmd.ExecuteNonQuery();
+                DBSpammer.setToQueue(s);
                 s = "";
             }
 
@@ -163,12 +155,11 @@ namespace DBFiller
 
             for (int i = 0; i < Master.diagnosen.Count; i++)
             {
-                if (i % ((Master.diagnosen.Count - 1) / 100) == 0)
+                if (i % ((Master.diagnosen.Count - 1) / teiler) == 0)
                 {
                     Console.WriteLine("Diagnosen werden angelegt... (" + ((float)((float)i / ((float)Master.diagnosen.Count - 1f)) * 100f).ToString("0") + "%)");
 
-                    cmd.CommandText = s;
-                    cmd.ExecuteNonQuery();
+                    DBSpammer.setToQueue(s);
                     s = "";
                 }
 
@@ -180,8 +171,7 @@ namespace DBFiller
 
             if (s != "")
             {
-                cmd.CommandText = s;
-                cmd.ExecuteNonQuery();
+                DBSpammer.setToQueue(s);
                 s = "";
             }
 
@@ -194,8 +184,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Medikamente angelegt.");
@@ -204,12 +193,11 @@ namespace DBFiller
 
             for (int i = 0; i < Master.medsProAufenthalt.Count; i++)
             {
-                if (i % ((Master.medsProAufenthalt.Count - 1) / 100) == 0)
+                if (i % ((Master.medsProAufenthalt.Count - 1) / teiler) == 0)
                 {
                     Console.WriteLine("MedikamenteProAufenthalt werden angelegt... (" + ((float)((float)i / ((float)Master.medsProAufenthalt.Count - 1f)) * 100f).ToString("0") + "%)");
 
-                    cmd.CommandText = s;
-                    cmd.ExecuteNonQuery();
+                    DBSpammer.setToQueue(s);
                     s = "";
                 }
 
@@ -220,8 +208,7 @@ namespace DBFiller
 
             if (s != "")
             {
-                cmd.CommandText = s;
-                cmd.ExecuteNonQuery();
+                DBSpammer.setToQueue(s);
                 s = "";
             }
 
@@ -234,8 +221,7 @@ namespace DBFiller
                 s += "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + "); ";
             }
 
-            cmd.CommandText = s;
-            cmd.ExecuteNonQuery();
+            DBSpammer.setToQueue(s);
             s = "";
 
             Console.WriteLine("Unverträglichkeiten angelegt.");
@@ -244,12 +230,11 @@ namespace DBFiller
 
             for (int i = 0; i < Master.arbeitslogs.Count; i++)
             {
-                if (i % ((Master.arbeitslogs.Count - 1) / 100) == 0)
+                if (i % ((Master.arbeitslogs.Count - 1) / teiler) == 0)
                 {
                     Console.WriteLine("Arbeitslogs werden angelegt... (" + ((float)((float)i / ((float)Master.arbeitslogs.Count - 1f)) * 100f).ToString("0") + "%)");
 
-                    cmd.CommandText = s;
-                    cmd.ExecuteNonQuery();
+                    DBSpammer.setToQueue(s);
                     s = "";
                 }
 
@@ -260,12 +245,16 @@ namespace DBFiller
 
             if (s != "")
             {
-                cmd.CommandText = s;
-                cmd.ExecuteNonQuery();
+                DBSpammer.setToQueue(s);
                 s = "";
             }
 
             Console.WriteLine("Arbeitslogs angelegt.");
+
+
+            DBSpammer.setNoEntriesLeft();
+
+            DBSpammer.waitForFinished();
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nAlle Tabellen wurden vollständig angelegt.");

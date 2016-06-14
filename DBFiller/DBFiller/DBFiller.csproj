@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Classes.cs" />
     <Compile Include="DBClear.cs" />
+    <Compile Include="DBSpammer.cs" />
     <Compile Include="DBZugriff.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="NameGen.cs" />
