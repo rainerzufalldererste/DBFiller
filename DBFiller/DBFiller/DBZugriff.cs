@@ -11,14 +11,14 @@ namespace DBFiller
     public static partial class DBZugriff
     {
         internal static NpgsqlConnection connection;
-        const int teiler = 350;
+        const int teiler = 600;
 
         public static void DBVerbidung()
         {
             connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
 
-            DBSpammer.spamDB(4);
+            DBSpammer.spamDB(6);
         }
 
         public static void LoadData()
@@ -132,7 +132,7 @@ namespace DBFiller
             {
                 if (i % ((Master.aufenthalte.Count - 1) / teiler) == 0)
                 {
-                    Console.WriteLine("Aufenthalte werden angelegt... (" + ((float)((float)i / ((float)Master.aufenthalte.Count - 1f)) * 100f).ToString("0") + "%)");
+                    Console.WriteLine("Aufenthalte werden angelegt... (" + ((float)((float)i / ((float)Master.aufenthalte.Count - 1f)) * 100f).ToString("0.0") + "%)");
 
                     DBSpammer.setToQueue(s);
                     s = "";
@@ -157,7 +157,7 @@ namespace DBFiller
             {
                 if (i % ((Master.diagnosen.Count - 1) / teiler) == 0)
                 {
-                    Console.WriteLine("Diagnosen werden angelegt... (" + ((float)((float)i / ((float)Master.diagnosen.Count - 1f)) * 100f).ToString("0") + "%)");
+                    Console.WriteLine("Diagnosen werden angelegt... (" + ((float)((float)i / ((float)Master.diagnosen.Count - 1f)) * 100f).ToString("0.0") + "%)");
 
                     DBSpammer.setToQueue(s);
                     s = "";
@@ -195,7 +195,7 @@ namespace DBFiller
             {
                 if (i % ((Master.medsProAufenthalt.Count - 1) / teiler) == 0)
                 {
-                    Console.WriteLine("MedikamenteProAufenthalt werden angelegt... (" + ((float)((float)i / ((float)Master.medsProAufenthalt.Count - 1f)) * 100f).ToString("0") + "%)");
+                    Console.WriteLine("MedikamenteProAufenthalt werden angelegt... (" + ((float)((float)i / ((float)Master.medsProAufenthalt.Count - 1f)) * 100f).ToString("0.0") + "%)");
 
                     DBSpammer.setToQueue(s);
                     s = "";
@@ -232,7 +232,7 @@ namespace DBFiller
             {
                 if (i % ((Master.arbeitslogs.Count - 1) / teiler) == 0)
                 {
-                    Console.WriteLine("Arbeitslogs werden angelegt... (" + ((float)((float)i / ((float)Master.arbeitslogs.Count - 1f)) * 100f).ToString("0") + "%)");
+                    Console.WriteLine("Arbeitslogs werden angelegt... (" + ((float)((float)i / ((float)Master.arbeitslogs.Count - 1f)) * 100f).ToString("0.0") + "%)");
 
                     DBSpammer.setToQueue(s);
                     s = "";

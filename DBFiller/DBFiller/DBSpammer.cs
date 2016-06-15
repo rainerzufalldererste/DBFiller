@@ -91,9 +91,11 @@ namespace DBFiller
 
         public static void waitForFinished()
         {
+            Console.WriteLine("\nWaitung for the threads to finish...\n");
+
             for (int i = 0; i < threads.Length; i++)
             {
-                while (threads[i].ThreadState != ThreadState.Aborted)
+                while (threads[i].ThreadState != ThreadState.Stopped)
                     Thread.Sleep(1);
             }
         }
