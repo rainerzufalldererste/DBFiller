@@ -79,6 +79,8 @@ namespace DBFiller
                         goto redo;
                     }
                 }
+                else
+                    Thread.Sleep(1);
             }
         }
 
@@ -102,7 +104,10 @@ namespace DBFiller
             for (int i = 0; i < threads.Length; i++)
             {
                 while (threads[i].ThreadState != ThreadState.Stopped)
-                    Thread.Sleep(1);
+                {
+                    Console.WriteLine("Waiting for threads to finish... (" + queue.Count + " Entries left)");
+                    Thread.Sleep(500);
+                }
             }
         }
 

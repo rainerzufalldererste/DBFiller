@@ -34,7 +34,7 @@ namespace DBFiller
 
             foreach (Patient pat in Master.patienten)
             {
-                s += "INSERT INTO \"Patient\" (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + "); ";
+                s += "INSERT INTO Patient (name, krankenkassenNr, geschlecht, alter) VALUES ('" + pat._name + "', " + pat._krankenkassenNr + ", '" + pat._geschlecht + "', " + pat._alter + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -46,7 +46,7 @@ namespace DBFiller
 
             foreach (Abteilung ab in Master.abteilungen)
             {
-                s += "INSERT INTO \"Abteilung\" (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "'); ";
+                s += "INSERT INTO Abteilung (stationsNr, name) VALUES (" + ab._stationNr + ", '" + ab._name + "'); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -58,7 +58,7 @@ namespace DBFiller
 
             foreach (Angestellter an in Master.angestellte)
             {
-                s += "INSERT INTO \"Angestellter\" (id, name) VALUES (" + an._id + ", '" + an._name + "'); ";
+                s += "INSERT INTO Angestellter (id, name) VALUES (" + an._id + ", '" + an._name + "'); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -70,7 +70,7 @@ namespace DBFiller
 
             foreach (Arzt ar in Master.ärzte)
             {
-                s += "INSERT INTO \"Arzt\" (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + "); ";
+                s += "INSERT INTO Arzt (id, stationsNr) VALUES (" + ar._id + ", " + ar._stationNr + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -82,7 +82,7 @@ namespace DBFiller
 
             foreach (Pfleger pfle in Master.pfleger)
             {
-                s += "INSERT INTO \"Pfleger\" (id) VALUES (" + pfle._id + "); ";
+                s += "INSERT INTO Pfleger (id) VALUES (" + pfle._id + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -94,7 +94,7 @@ namespace DBFiller
 
             foreach (Zimmer zi in Master.zimmer)
             {
-                s += "INSERT INTO \"Zimmer\" (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + "); ";
+                s += "INSERT INTO Zimmer (zimmerNr, stationsNr) VALUES (" + zi._id + ", " + zi._stationNr + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -106,7 +106,7 @@ namespace DBFiller
 
             foreach (PflegerProZimmer ppz in Master.pflegerProZimmer)
             {
-                s += "INSERT INTO \"PflegerProZimmer\" (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + "); ";
+                s += "INSERT INTO PflegerProZimmer (pflegerID, zimmerNr) VALUES (" + ppz._pflegerId + ", " + ppz._zimmerNr + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -118,7 +118,7 @@ namespace DBFiller
 
             foreach (Bett bett in Master.betten)
             {
-                s += "INSERT INTO \"Bett\" (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + "); ";
+                s += "INSERT INTO Bett (bettenNr, zimmerNr) VALUES (" + bett._bettenNr + ", " + bett._zimmerNr + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -140,7 +140,7 @@ namespace DBFiller
 
                 Aufenthalt auf = Master.aufenthalte[i];
                 
-                s += "INSERT INTO \"Aufenthalt\" (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + "); ";
+                s += "INSERT INTO Aufenthalt (id, startDate, endDate, krankenkassenNr, bettenNr, behandelnderArzt) VALUES (" + auf._id + ", to_timestamp('" + auf._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + auf._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), " + auf._krankenkassenNr + ", " + auf._bettenNr + ", " + auf._behandelnderArzt + "); ";
             }
 
             if (s != "")
@@ -166,7 +166,7 @@ namespace DBFiller
                 Diagnose dia = Master.diagnosen[i];
                 dia._aufenthaltsID = dia.aufenthalt._id;
 
-                s += "INSERT INTO \"Diagnose\" (aufenthaltsID, diagnose) VALUES (" + dia._aufenthaltsID + ", '" + dia._diagnose + "'); ";
+                s += "INSERT INTO Diagnose (aufenthaltsID, diagnose) VALUES (" + dia._aufenthaltsID + ", '" + dia._diagnose + "'); ";
             }
 
             if (s != "")
@@ -181,7 +181,7 @@ namespace DBFiller
 
             foreach (Medikament med in Master.medikamente)
             {
-                s += "INSERT INTO \"Medikament\" (name, id) VALUES ('" + med._name + "', " + med._id + "); ";
+                s += "INSERT INTO Medikament (name, id) VALUES ('" + med._name + "', " + med._id + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -203,7 +203,7 @@ namespace DBFiller
 
                 MedProAufenthalt mpa = Master.medsProAufenthalt[i];
 
-                s += "INSERT INTO \"MedProAufenthalt\" (medID, id) VALUES (" + mpa._medID + ", " + mpa._aufenthaltsID + "); ";
+                s += "INSERT INTO MedProAufenthalt (medID, id) VALUES (" + mpa._medID + ", " + mpa._aufenthaltsID + "); ";
             }
 
             if (s != "")
@@ -218,7 +218,7 @@ namespace DBFiller
 
             foreach (Unverträglichkeit unver in Master.unverträglichkeiten)
             {
-                s += "INSERT INTO \"Unvertraeglichkeiten\" (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + "); ";
+                s += "INSERT INTO Unvertraeglichkeiten (med1, med2) VALUES (" + unver._med1 + ", " + unver._med2 + "); ";
             }
 
             DBSpammer.setToQueue(s);
@@ -240,7 +240,7 @@ namespace DBFiller
 
                 Arbeitslog al = Master.arbeitslogs[i];
 
-                s += "INSERT INTO \"Arbeitslog\" (id, startDate, endDate) VALUES (" + al._angestellterId + ", to_timestamp('" + al._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + al._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'));";
+                s += "INSERT INTO Arbeitslog (id, startDate, endDate) VALUES (" + al._angestellterId + ", to_timestamp('" + al._startDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'), to_timestamp('" + al._endDate.ToString("yyyy-MM-dd HH:mm") + "', 'YYYY-MM-DD HH24:MI'));";
             }
 
             if (s != "")
