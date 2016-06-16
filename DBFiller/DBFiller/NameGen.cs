@@ -44,8 +44,8 @@ namespace DBFiller
             return ret;
         }
 
-        public static string[] vornamenM = { "Ludwig", "Berthold", "Alois", "Winfried", "Otto", "Gregor", "Thomas", "Johannes", "Markus", "Peter", "Gerd", "Tobias", "Hans", "Walther", "Günther", "Manfred", "Pierre", "Juan", "Klaus", "Kürbis" };
-        public static string[] vornamenW = { "Gudrun", "Anette", "Luise", "Patrice", "Waltraud", "Anastasia", "Julietta", "Petra", "Anna", "Lisa", "Mona", "Augusta", "Hanna", "Sandra", "Gundula", "Claudia", "Henrietta" };
+        public static string[] vornamenM = { "Ludwig ", "Berthold ", "Alois ", "Winfried ", "Otto ", "Gregor ", "Thomas ", "Johannes ", "Markus ", "Peter ", "Gerd ", "Tobias ", "Hans ", "Walther ", "Günther ", "Manfred ", "Pierre ", "Juan ", "Klaus ", "Kürbis" };
+        public static string[] vornamenW = { "Gudrun ", "Anette ", "Luise ", "Patrice ", "Waltraud ", "Anastasia ", "Julietta ", "Petra ", "Anna ", "Lisa ", "Mona ", "Augusta ", "Hanna ", "Sandra ", "Gundula ", "Claudia ", "Henrietta" };
 
         public static string[] grünzeug = { "Schnittlauch", "Potato", "Spitzkohl", "Kohl", "Möhre", "Kürbis", "Salbei", "Hopfen", "Gerste", "Sanddorn", "Holunder", "Pfifferling", "Birne", "Rotkraut", "Eiche", "Tannenwald", "Soja" };
         public static string[] tiere = { "Eber", "Hirsch", "Lux", "Katze", "Hund", "Esel", "Pferd", "Hornisse", "Salamander", "Kröte", "Frosch", "Ziege", "Gemse", "Nashorn", "Antilope", "Wespe", "Hummel", "Biene", "Stechmücke" };

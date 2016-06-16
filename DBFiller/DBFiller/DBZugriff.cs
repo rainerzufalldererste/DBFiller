@@ -11,14 +11,14 @@ namespace DBFiller
     public static partial class DBZugriff
     {
         internal static NpgsqlConnection connection;
-        const int teiler = 600;
+        const int teiler = 1000;
 
         public static void DBVerbidung()
         {
             connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
 
-            DBSpammer.spamDB(6);
+            DBSpammer.spamDB(10);
         }
 
         public static void LoadData()

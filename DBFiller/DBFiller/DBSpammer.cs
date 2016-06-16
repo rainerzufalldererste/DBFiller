@@ -56,19 +56,25 @@ namespace DBFiller
             NpgsqlConnection connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
             connection.Open();
 
+
+            NpgsqlCommand cmd = new NpgsqlCommand("", connection);
+            string s = "";
+
             while (entriesLeft || queue.Count > 0)
             {
-                NpgsqlCommand cmd = new NpgsqlCommand(getFromQueue(), connection);
+                s = getFromQueue();
 
-                if (cmd.CommandText != null)
+                if (s != null)
                 {
+                    cmd.CommandText = s;
+
                     redo:
 
                     try
                     {
                         cmd.ExecuteNonQuery();
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         goto redo;
                     }

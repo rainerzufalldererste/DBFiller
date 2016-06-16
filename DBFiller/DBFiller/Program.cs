@@ -140,7 +140,7 @@ namespace DBFiller
 
         private static void generateMeds()
         {
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 600; i++)
             {
                 Medikament m = new Medikament(NameGen.getNameLoopFirst(NameGen.medizinS, NameGen.medizinE));
 
@@ -157,7 +157,7 @@ namespace DBFiller
         {
             int diag = 0;
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 30; i++)
             {
                 int zimmer = (int)((NameGen.rand.NextDouble() + .25) * 25 + 10);
                 int betten = (int)(NameGen.rand.NextDouble() * 3 + 2);
@@ -174,7 +174,7 @@ namespace DBFiller
         {
             int m = 0, w = 0;
 
-            for (int i = 0; i < 2500; i++)
+            for (int i = 0; i < 5000; i++)
             {
                 if (NameGen.rand.NextDouble() > .5d)
                 {
@@ -193,7 +193,7 @@ namespace DBFiller
 
         private static void generatePfleger()
         {
-            for (int i = 0; i < 350; i++)
+            for (int i = 0; i < 700; i++)
             {
                 new Pfleger(NameGen.getName(NameGen.vornamenW, NameGen.tiere));
             }
@@ -215,7 +215,7 @@ namespace DBFiller
 
         private static void generateÄrzte()
         {
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < 160; i++)
             {
                 int station = (int)(NameGen.rand.NextDouble() * int.MaxValue) % Master.abteilungen.Count;
 
