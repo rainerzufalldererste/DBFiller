@@ -8,6 +8,8 @@ namespace DBFiller
 {
     internal static class Master
     {
+        internal static string connection = "HOST=127.0.0.1;Username=postgres;Password=qwertz";
+
         internal static List<Bett> betten = new List<Bett>();
         internal static List<Zimmer> zimmer = new List<Zimmer>();
         internal static List<Abteilung> abteilungen = new List<Abteilung>();

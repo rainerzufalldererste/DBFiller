@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,6 +101,24 @@ namespace DBFiller
             Console.WriteLine("Confirm writing {0} Entries to the Database? Press enter.", getSize());
             Console.ReadKey();
             Console.WriteLine();
+
+            string password = "";
+
+            if (File.Exists("pw.txt"))
+            {
+                password = File.ReadAllText("pw.txt");
+            }
+            else
+            {
+                Console.WriteLine("Passwort für den Datenbank-Nutzer eingeben:");
+                password = Console.ReadLine();
+                File.WriteAllText("pw.txt", password);
+            }
+
+            Master.connection = "HOST=127.0.0.1;Username=postgres;";
+
+            if (!string.IsNullOrEmpty(password))
+                Master.connection += "Password=" + password;
 
             TRY_SEND:
 

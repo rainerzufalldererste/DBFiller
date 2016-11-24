@@ -53,9 +53,8 @@ namespace DBFiller
 
         private static void spammer()
         {
-            NpgsqlConnection connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
+            NpgsqlConnection connection = new NpgsqlConnection(Master.connection);
             connection.Open();
-
 
             NpgsqlCommand cmd = new NpgsqlCommand("", connection);
             string s = "";

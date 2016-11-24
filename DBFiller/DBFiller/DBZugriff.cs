@@ -15,7 +15,7 @@ namespace DBFiller
 
         public static void DBVerbidung()
         {
-            connection = new NpgsqlConnection("HOST=141.7.66.161;Port=5433;Username=db1;Password=secret;Database=DB1_CRANKIHOUSE_asstilee");
+            connection = new NpgsqlConnection(Master.connection);
             connection.Open();
 
             DBSpammer.spamDB(10);
